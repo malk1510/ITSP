@@ -27,11 +27,11 @@ def draw():
 	false = df[df['Class']==1]
 	st.title('Scatter Plot of True amounts')
 	fig, ax = plt.subplots(figsize=(20,10))
-	plt.scatter(ax=ax, true['Time'], true['amount'])
+	plt.scatter(true['Time'], true['amount'], ax=ax)
 	st.write(fig)
 	st.title('Scatter Plot of False amounts')
 	fig, ax = plt.subplots(figsize=(20,10))
-	plt.scatter(ax=ax, false['Time'], false['amount'])
+	plt.scatter(false['Time'], false['amount'], ax=ax)
 	st.write(fig)
 	st.title('Number of transactions which are normal/fraud')
 	st.write(plt.bar(['Normal', 'Fraud'],[len(true), len(false)]))
