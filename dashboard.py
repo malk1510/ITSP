@@ -1,12 +1,9 @@
 import streamlit as st
 import matplotlib.pyplot as plt
-import plotly.express as px
 import plotly.graph_objects as go
 from imblearn.over_sampling import SMOTE
-from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-import seaborn as sns
-import tensorflow as tf
+import plotly.figure_factory as ff
 import pandas as pd
 import numpy as np
 
@@ -27,11 +24,11 @@ def draw():
 	false = df[df['Class']==1]
 	st.title('Scatter Plot of True amounts')
 	fig, ax = plt.subplots(figsize=(20,10))
-	plt.scatter(true['Time'], true['amount'], ax=ax)
+	plt.scatter(true['Time'], true['amount'])
 	st.write(fig)
 	st.title('Scatter Plot of False amounts')
 	fig, ax = plt.subplots(figsize=(20,10))
-	plt.scatter(false['Time'], false['amount'], ax=ax)
+	plt.scatter(false['Time'], false['amount'])
 	st.write(fig)
 	st.title('Number of transactions which are normal/fraud')
 	st.write(plt.bar(['Normal', 'Fraud'],[len(true), len(false)]))
@@ -46,15 +43,14 @@ def draw():
 	st.title('Comparison of Fraud and Normal Transactions after SMOTE Handling')
 	st.write(plt.bar(['Normal', 'Fraud'], [len(y_train==0), len(y_train==1)]))
 
+    
 def plotting_func(text_addr, s, mat):
-	st.title(s)
-	f = open(text_addr, 'r')
-	st.write(f.readlines())
-	fig, ax = plt.subplots(figsize=(20,20))
-	plt.write('Confusion Matrix')
-	x = sns.heatmap(mat, annot=True, colorscale = 'Blues')
-	x.plot(ax=ax)
-	st.write(fig)
+    st.title(s)
+    with open(text_addr, 'r') as f:
+        st.write(f.readlines())
+    st.write('Confusion Matrix')
+    fig = ff.create_annotated_heatmap(z = mat, y = ['Predicted Normal','Predicted Fraud'], x=['Real Normal','Real Fraud'], colorscale = 'Blues')
+    st.write(fig)
 
 draw()
 plotting_func('log_res.txt', 'Logistic Regression', np.array([[55376, 10], [1483, 93]]))
